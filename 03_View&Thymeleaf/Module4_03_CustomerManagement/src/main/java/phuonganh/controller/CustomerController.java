@@ -15,7 +15,7 @@ import phuonganh.service.ICustomerService;
 import java.util.List;
 
 @Controller
-@RequestMapping("/customer")
+@RequestMapping(value = "/customer",produces = "application/x-www-form-urlencoded;charset=UTF-8")
 public class CustomerController {
     private final ICustomerService customerService=new CustomerServiceImp();
     @GetMapping
@@ -38,7 +38,7 @@ public class CustomerController {
         redirect.addFlashAttribute("success", "Save successfully");
         return "redirect:/customer";
     }
-    @GetMapping("/{id}edit")
+    @GetMapping("/{id}/edit")
     public String edit(@PathVariable int id,Model model){
         model.addAttribute("customer",customerService.findById(id));
         return "edit";
@@ -61,4 +61,10 @@ public class CustomerController {
         redirect.addFlashAttribute("success", "Removed customer successfully!");
         return "redirect:/customer";
     }
+    @GetMapping("/{id}/view")
+    public String view(@PathVariable int id, Model model) {
+        model.addAttribute("customer", customerService.findById(id));
+        return "/view";
+    }
+
 }
