@@ -1,4 +1,4 @@
-package model;
+package demo.model;
 
 public class Condiment implements Cloneable {
     private int id;

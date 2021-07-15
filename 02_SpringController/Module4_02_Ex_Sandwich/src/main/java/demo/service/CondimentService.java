@@ -1,6 +1,6 @@
-package service;
+package demo.service;
 
-import model.Condiment;
+import demo.model.Condiment;
 
 import java.util.List;
 
