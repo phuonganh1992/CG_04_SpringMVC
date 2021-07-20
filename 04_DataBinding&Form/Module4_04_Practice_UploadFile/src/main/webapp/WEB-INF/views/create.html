@@ -7,9 +7,27 @@
     <title>Title</title>
 </head>
 <body>
+<p>
+    <a th:href="@{/product/create}">
+        Add new product
+    </a>
+</p>
 <div id="form">
-    <form action="">
-
+    <form action="/product/save" th:object="${productForm}" method="post" enctype="multipart/form-data">
+        <input type="hidden" th:field="*{id}">
+        <div>
+            <label>Name</label>
+            <input type="text" th:field="*{name}">
+        </div>
+        <div>
+            <label>Description</label>
+            <input type="text" th:field="*{description}"/>
+        </div>
+        <div>
+            <label>Image</label>
+            <input type="file" th:field="*{image}"/>
+        </div>
+        <input type="submit" value="Save"/>
     </form>
 </div>
 <footer th:replace="/layout :: footer"></footer>
