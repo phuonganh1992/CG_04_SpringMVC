@@ -3,6 +3,8 @@ package com.codegym.configuration;
 import com.codegym.formatter.ProvinceFormatter;
 import com.codegym.service.customer.CustomerService;
 import com.codegym.service.customer.ICustomerService;
+import com.codegym.service.product.IProductService;
+import com.codegym.service.product.ProductService;
 import com.codegym.service.province.IProvinceService;
 import com.codegym.service.province.ProvinceService;
 import org.springframework.beans.BeansException;
@@ -129,5 +131,10 @@ public class AppConfiguration implements WebMvcConfigurer, ApplicationContextAwa
     @Bean
     public IProvinceService provinceService(){
         return new ProvinceService();
+    }
+
+    @Bean
+    public IProductService productService(){
+        return new ProductService();
     }
 }
