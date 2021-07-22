@@ -24,8 +24,8 @@ com/codegym/controller/ProvinceController.java
  com.codegym.controller.ProvinceController
 com/codegym/configuration/AppConfiguration.java
  com.codegym.configuration.AppConfiguration
-com/codegym/controller/ProductController.java
- com.codegym.controller.ProductController
+com/codegym/service/product/IProductService.java
+ com.codegym.service.product.IProductService
 com/codegym/repository/IProductRepository.java
  com.codegym.repository.IProductRepository
 com/codegym/configuration/AppInit.java
@@ -34,5 +34,5 @@ com/codegym/model/Product.java
  com.codegym.model.Product
 com/codegym/service/product/ProductService.java
  com.codegym.service.product.ProductService
-com/codegym/service/product/IProductService.java
- com.codegym.service.product.IProductService
+com/codegym/controller/ProductController.java
+ com.codegym.controller.ProductController

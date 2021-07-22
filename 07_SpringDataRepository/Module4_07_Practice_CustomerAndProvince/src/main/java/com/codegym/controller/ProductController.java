@@ -5,9 +5,13 @@ import com.codegym.service.product.IProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.Optional;
 
 @Controller
 public class ProductController {
@@ -15,9 +19,14 @@ public class ProductController {
     private IProductService productService;
 
     @GetMapping("/products")
-    public ModelAndView listProduct(Pageable pageable){
+    public ModelAndView listProduct(@PageableDefault(value = 5) Pageable pageable, @RequestParam("search")Optional<String> search){
+        Page<Product> products;
+        if (search.isPresent()){
+            products=productService.findAllByName(search.get(),pageable);
+        } else {
+            products=productService.findAll(pageable);
+        }
         ModelAndView modelAndView=new ModelAndView("/product/list");
-        Page<Product> products=productService.findAll(pageable);
         modelAndView.addObject("products",products);
         return modelAndView;
     }
