@@ -2,27 +2,27 @@ com/codegym/model/Province.java
  com.codegym.model.Province
 com/codegym/model/Customer.java
  com.codegym.model.Customer
-com/codegym/service/customer/ICustomerService.java
- com.codegym.service.customer.ICustomerService
+com/codegym/service/province/IProvinceService.java
+ com.codegym.service.province.IProvinceService
 com/codegym/repository/IProvinceRepository.java
  com.codegym.repository.IProvinceRepository
 com/codegym/service/IGeneralService.java
  com.codegym.service.IGeneralService
-com/codegym/service/customer/CustomerService.java
- com.codegym.service.customer.CustomerService
-com/codegym/repository/ICustomerRepository.java
- com.codegym.repository.ICustomerRepository
-com/codegym/formatter/ProvinceFormatter.java
- com.codegym.formatter.ProvinceFormatter
-com/codegym/service/province/ProvinceService.java
- com.codegym.service.province.ProvinceService
-com/codegym/controller/CustomerController.java
- com.codegym.controller.CustomerController
-com/codegym/service/province/IProvinceService.java
- com.codegym.service.province.IProvinceService
-com/codegym/configuration/AppConfiguration.java
- com.codegym.configuration.AppConfiguration
 com/codegym/configuration/AppInit.java
  com.codegym.configuration.AppInit
+com/codegym/service/province/ProvinceService.java
+ com.codegym.service.province.ProvinceService
+com/codegym/formatter/ProvinceFormatter.java
+ com.codegym.formatter.ProvinceFormatter
+com/codegym/service/customer/ICustomerService.java
+ com.codegym.service.customer.ICustomerService
+com/codegym/configuration/AppConfiguration.java
+ com.codegym.configuration.AppConfiguration
+com/codegym/service/customer/CustomerService.java
+ com.codegym.service.customer.CustomerService
 com/codegym/controller/ProvinceController.java
  com.codegym.controller.ProvinceController
+com/codegym/repository/ICustomerRepository.java
+ com.codegym.repository.ICustomerRepository
+com/codegym/controller/CustomerController.java
+ com.codegym.controller.CustomerController
