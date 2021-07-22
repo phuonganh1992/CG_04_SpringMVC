@@ -18,6 +18,7 @@
             <td th:text="${province.name}"></td>
             <td><a th:href="@{/edit-province/__${province.id}__ }">Edit</a></td>
             <td><a th:href="@{/delete-province/__${province.id}__ }">Delete</a></td>
+            <td><a th:href="@{/view-province/__${province.id}__ }">View</a></td>
         </tr>
     </th:block>
 </table>

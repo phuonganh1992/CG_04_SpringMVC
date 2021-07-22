@@ -1,5 +1,6 @@
 package com.codegym.configuration;
 
+import com.codegym.formatter.ProvinceFormatter;
 import com.codegym.service.customer.CustomerService;
 import com.codegym.service.customer.ICustomerService;
 import com.codegym.service.province.IProvinceService;
@@ -116,7 +117,7 @@ public class AppConfiguration implements WebMvcConfigurer, ApplicationContextAwa
      //cấu hành formatter
     @Override
     public void addFormatters(FormatterRegistry registry) {
-//        registry.addFormatter(new ProvinceFormatter(applicationContext.getBean(ProvinceService.class)));
+        registry.addFormatter(new ProvinceFormatter(applicationContext.getBean(ProvinceService.class)));
     }
 
     //
