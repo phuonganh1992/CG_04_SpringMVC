@@ -28,7 +28,7 @@
 <p>Today Comments:</p>
 
 <table>
-    <block th:each="comment: ${comments}">
+    <th:block th:each="comment: ${comments}">
         <input type="hidden" name="id" th:value="${comment.id}">
         <tr>
             <td th:text="${comment.author}"></td>
@@ -51,7 +51,7 @@
             </td>
         </tr>
 
-    </block>
+    </th:block>
 </table>
 </body>
 <script>

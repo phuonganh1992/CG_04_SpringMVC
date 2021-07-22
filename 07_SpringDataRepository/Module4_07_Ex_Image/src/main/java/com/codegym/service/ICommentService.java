@@ -1,17 +1,18 @@
 package com.codegym.service;
 
 import com.codegym.model.Comment;
+import com.codegym.repository.ICommentRepository;
 
-import java.util.List;
+
+import java.util.Optional;
 
 public interface ICommentService {
-    List<Comment> showAllComment();
+    Iterable<Comment> findAll();
 
-    Comment addComment(Comment comment);
+    Optional<Comment> findById(Long id);
 
-    void addLike(Comment comment);
+    void save(Comment comment);
 
-    void disLike(Comment comment);
+    void remove(Long id);
 
-    Comment findOne(long id);
 }

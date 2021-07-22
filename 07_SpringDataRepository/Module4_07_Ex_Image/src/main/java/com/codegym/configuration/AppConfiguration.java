@@ -1,5 +1,7 @@
 package com.codegym.configuration;
 
+import com.codegym.service.CommentService;
+import com.codegym.service.ICommentService;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
@@ -114,6 +116,10 @@ public class AppConfiguration implements WebMvcConfigurer, ApplicationContextAwa
 //    public void addFormatters(FormatterRegistry registry) {
 //        registry.addFormatter(new ProvinceFormatter(applicationContext.getBean(ProvinceService.class)));
 //    }
+    @Bean
+    public ICommentService commentService(){
+        return new CommentService();
+    }
 
 
 }
