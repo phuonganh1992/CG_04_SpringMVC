@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
+import org.springframework.validation.annotation.Validated;
 
 @Component
 public class PhoneNumber implements Validator {
@@ -36,7 +37,7 @@ public class PhoneNumber implements Validator {
         if(!number.startsWith("0")){
             errors.rejectValue("number","number.startwith");
         }
-        if(number.matches("(^$|[0-9]*$)")){
+        if(!number.matches("(^$|[0-9]*$)")){
             errors.rejectValue("number","number.matches");
         }
     }

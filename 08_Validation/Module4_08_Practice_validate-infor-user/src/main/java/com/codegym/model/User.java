@@ -9,7 +9,7 @@ public class User {
     @Size(min = 2,max = 30,message = "Length from 2 to 30")
     private String name;
 
-    @Min(value = 18, message = "age greater than 18")
+    @Min(value = 18)
     private int age;
 
     public User() {
