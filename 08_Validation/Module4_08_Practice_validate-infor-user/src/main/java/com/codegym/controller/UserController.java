@@ -18,14 +18,14 @@ public class UserController {
 
     @GetMapping("/user")
     public ModelAndView showForm() {
-        ModelAndView modelAndView = new ModelAndView("/index");
+        ModelAndView modelAndView = new ModelAndView("/user/index");
         return modelAndView;
     }
 
     @PostMapping("/validateUser")
     public ModelAndView checkValidation(@Validated @ModelAttribute("user") User user, BindingResult bindingResult){
-        if(bindingResult.hasErrors()){
-            return new ModelAndView("/index");
-        } else return new ModelAndView("/result");
+        if(bindingResult.hasFieldErrors()){
+            return new ModelAndView("/user/index");
+        } else return new ModelAndView("/user/result");
     }
 }
