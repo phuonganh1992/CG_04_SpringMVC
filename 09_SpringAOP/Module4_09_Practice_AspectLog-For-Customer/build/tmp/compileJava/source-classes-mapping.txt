@@ -1,0 +1,38 @@
+com/codegym/repository/IProductRepository.java
+ com.codegym.repository.IProductRepository
+com/codegym/service/province/ProvinceService.java
+ com.codegym.service.province.ProvinceService
+com/codegym/model/Customer.java
+ com.codegym.model.Customer
+com/codegym/model/Product.java
+ com.codegym.model.Product
+com/codegym/service/product/IProductService.java
+ com.codegym.service.product.IProductService
+com/codegym/service/customer/ICustomerService.java
+ com.codegym.service.customer.ICustomerService
+com/codegym/configuration/AppConfiguration.java
+ com.codegym.configuration.AppConfiguration
+com/codegym/controller/ProductController.java
+ com.codegym.controller.ProductController
+com/codegym/service/IGeneralService.java
+ com.codegym.service.IGeneralService
+com/codegym/service/customer/CustomerService.java
+ com.codegym.service.customer.CustomerService
+com/codegym/configuration/AppInit.java
+ com.codegym.configuration.AppInit
+com/codegym/controller/CustomerController.java
+ com.codegym.controller.CustomerController
+com/codegym/controller/ProvinceController.java
+ com.codegym.controller.ProvinceController
+com/codegym/repository/IProvinceRepository.java
+ com.codegym.repository.IProvinceRepository
+com/codegym/repository/ICustomerRepository.java
+ com.codegym.repository.ICustomerRepository
+com/codegym/service/product/ProductService.java
+ com.codegym.service.product.ProductService
+com/codegym/model/Province.java
+ com.codegym.model.Province
+com/codegym/service/province/IProvinceService.java
+ com.codegym.service.province.IProvinceService
+com/codegym/Logger.java
+ com.codegym.Logger
