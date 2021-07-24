@@ -31,17 +31,20 @@ public class UserController {
 
     @PostMapping("/validateUser")
     public ModelAndView checkValidate(@Validated @ModelAttribute("user") User user, BindingResult bindingResult){
-        ModelAttribute modelAttribute;
+        ModelAndView modelAndView;
         if(bindingResult.hasFieldErrors()) {
-            model new ModelAndView("/user/index");
+            modelAndView= new ModelAndView("/user/index");
         }
         else {
+            modelAndView=new ModelAndView("/user/result");
             Optional<User> optionalUser=userService.findUserByFirstNameAndLastName(user.getFirstName(), user.getLastName());
             if(optionalUser.isPresent()){
-
+                modelAndView.addObject("message","user existed!");
+            } else {
+                userService.save(user);
+                modelAndView.addObject("message","Congratulations! You registered successfully!");
             }
-            userService.save(user);
-            return new ModelAndView("/user/result");
         }
+        return modelAndView;
     }
 }
