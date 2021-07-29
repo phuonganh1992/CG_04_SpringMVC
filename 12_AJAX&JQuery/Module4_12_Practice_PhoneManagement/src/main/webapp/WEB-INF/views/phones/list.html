@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>List smartphone</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="/list_js.js"></script>
+  <script src="/view.js"></script>
 </head>
 <body>
 <form id="add-smartphone">
@@ -28,98 +31,47 @@
   </table>
 </form>
 <h1>Smartphone List</h1>
-<table id="smartphoneList">
+<table id="smartphoneList" border="1px solid">
   <tr>
-    <td>Producer</td>
-    <td>Model</td>
-    <td>Price</td>
-    <td>Delete</td>
+    <th>Producer</th>
+    <th>Model</th>
+    <th>Price</th>
+    <th>Delete</th>
+    <th>Edit</th>
   </tr>
   <th:block th:each="smartphone: ${smartphones}">
     <tr>
       <td th:text="${smartphone.producer}"></td>
       <td th:text="${smartphone.model}"></td>
       <td th:text="${smartphone.price}"></td>
-      <td><a class="deleteSmartphone" th:href="${smartphone.getId()}">Delete</a></td>
+      <td><a class="deleteSmartphone" th:href="${smartphone.id}">Delete</a></td>
+      <td><a class="viewSmartphone" th:href="${smartphone.id}">View</a></td>
     </tr>
   </th:block>
 </table>
 
-<script type="text/javascript">
-  function addNewSmartPhone() {
-    let _producer=$("#producer").val();
-    let _model=$("#model").val();
-    let _price=$("#price").val();
-    let newSmartPhone={
-      producer:_producer,
-      model:_model,
-      price:_price
-    };
-    $.ajax({
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json'
-      },
-      type:"POST",
-      data:JSON.stringify(newSmartPhone),
-      url:"/smartphones",
-      success:successHandler()
-    });
-    event.preventDefault();
-  }
-
-  function successHandler() {
-    $.ajax({
-      type: "GET",
-      url: "/smartphones/",
-      success: function (data){
-        let content=`    <tr>
-                        <td>Producer</td>
-                       <td>Model</td>
-                      <td>Price</td>
-                       <td>Delete</td>
-                    </tr>`;
-        for (let i=0;i<data.length;i++){
-          content+=`<tr>
-    <td >${data[i].producer}</td>
-    <td >${data[i].model}</td>
-    <td >${data[i].price}</td>
-    <td><a class="deleteSmartphone" href="${data[i].id}">Delete</a></td>
-    </tr>`;
-
-        }
-        document.getElementById("smartphoneList").innerHTML=content;
-      }
-    })
-  }
-
-  // function getSmartphone(smartphone){
-  //   return
-  //   `<tr>
-  //   <td >${smartphone.producer}</td>
-  //   <td >${smartphone.model}</td>
-  //   <td >${smartphone.price}</td>
-  //   <td><a class="deleteSmartphone" href="${smartphone.id}">Delete</a></td>
-  //   </tr>`;
-  //
-  // }
-
-  $(function (){
-    $(".deleteSmartphone").click(function (event){
-      let a=$(this);
-      let smartphoneId=a.attr("href");
-      $.ajax({
-        type:"DELETE",
-        url:`/smartphones/${smartphoneId}`,
-        success:function (data){
-          a.parent().parent().remove();
-        }
-      })
-      event.preventDefault();
-    })
-  })
-</script>
-
+<div>
+  <h1>Information</h1>
+    <input type="hidden" id="id_info">
+    <table>
+      <tr>
+        <td>Producer:</td>
+        <td><input type="text" id="producer_info"></td>
+      </tr>
+      <tr>
+        <td>Model:</td>
+        <td><input type="text" id="model_info"></td>
+      </tr>
+      <tr>
+        <td>Price:</td>
+        <td><input type="text" id="price_info"></td>
+      </tr>
+      <tr>
+        <td colspan="2"><button onclick="edit()">Edit</button></td>
+      </tr>
+    </table>
+</div>
 
 </body>
+
 </html>
