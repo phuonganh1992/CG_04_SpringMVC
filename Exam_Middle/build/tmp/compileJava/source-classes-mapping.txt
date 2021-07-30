@@ -22,5 +22,7 @@ com/codegym/service/category/ICategoryService.java
  com.codegym.service.category.ICategoryService
 com/codegym/service/product/ProductService.java
  com.codegym.service.product.ProductService
+com/codegym/controller/CategoryController.java
+ com.codegym.controller.CategoryController
 com/codegym/controller/ProductController.java
  com.codegym.controller.ProductController

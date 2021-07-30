@@ -13,10 +13,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.List;
 import java.util.Optional;
 
 @Controller
 @RequestMapping("/products")
+@CrossOrigin("*")
 public class ProductController {
     @Autowired
     IProductService productService;
@@ -46,8 +48,8 @@ public class ProductController {
 
     @GetMapping("/api")
     public ResponseEntity<Iterable<Product>> findAllApi() {
-        Iterable<Product> products = productService.findAll();
-        return new ResponseEntity(products, HttpStatus.OK);
+        List<Product> products = (List<Product>) productService.findAll();
+        return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
     @PostMapping("/api")
@@ -79,7 +81,7 @@ public class ProductController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
         productService.delete(id);
-        return new ResponseEntity<>(productOptional.get(), HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(productOptional.get(), HttpStatus.OK);
     }
 
 
