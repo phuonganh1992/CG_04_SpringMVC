@@ -50,14 +50,23 @@
 </div>
 
 <div>
-    <button id="bt_showList" onclick="getAllProduct()">Show list</button>
-    <table id="listProduct" border="1px solid" hidden></table>
+    <button id="bt_search">Search</button>
+    <input type="text" id="searchByName">
 </div>
 
 <div>
+    <button id="bt_showList">Show list</button>
+    <table id="listProduct" border="1px solid" hidden width="50%"></table>
+</div>
+
+
+<div>
+
     <table id="formEdit" hidden>
         <caption><h3>Product information</h3></caption>
-        <tr><td><input type="hidden" id="id_edit"></td></tr>
+        <tr>
+            <td><input type="hidden" id="id_edit"></td>
+        </tr>
         <tr>
             <td>Name</td>
         </tr>
@@ -92,7 +101,8 @@
             <td><select id="selectCategory_edit"></select></td>
         </tr>
         <tr>
-            <td><input type="submit" value="Edit" onclick="editProduct()">|<input type="submit" value="Back" onclick="hideFormEdit()"></td>
+            <td><input type="submit" value="Edit" onclick="editProduct()">|<input type="submit" value="Back"
+                                                                                  onclick="hideFormEdit()"></td>
         </tr>
     </table>
 </div>
@@ -103,7 +113,7 @@
         getAllCategory();
     })
 
-    function hideFormCreate(){
+    function hideFormCreate() {
         $("#formCreate").hide();
     }
 
@@ -116,7 +126,16 @@
         $("#listProduct").hide();
     })
 
-    function hideFormEdit(){
+    $("#bt_search").click(function () {
+        $("#listProduct").show();
+        searchByName();
+    })
+
+    $("#bt_search").dblclick(function () {
+        $("#listProduct").hide();
+    })
+
+    function hideFormEdit() {
         $("#formEdit").hide();
     }
 
@@ -148,7 +167,7 @@
                     contentType: "application/json",
                     url: "http://localhost:8080/products/api",
                     data: JSON.stringify(newProduct),
-                    success: function (){
+                    success: function () {
                         getAllProduct();
                         alert("new product is created")
                     },
@@ -192,6 +211,7 @@
                 }
                 $("#listProduct").html(content);
 
+
             }
         })
     }
@@ -211,28 +231,28 @@
                 getAllCategoryEditForm();
             },
             error: function (e) {
-                alert("Server error in view detail: "+e)
+                alert("Server error in view detail: " + e)
             }
         })
     }
 
-    function deleteProduct(id){
+    function deleteProduct(id) {
         $.ajax({
-            type:"DELETE",
-            contentType:"application/json",
-            url:"http://localhost:8080/products/api/"+id,
+            type: "DELETE",
+            contentType: "application/json",
+            url: "http://localhost:8080/products/api/" + id,
             success: function () {
                 getAllProduct();
                 alert("Product is deleted")
             },
-            error:function (e){
-                alert("Server error in delete: "+e)
+            error: function (e) {
+                alert("Server error in delete: " + e)
             }
         })
     }
 
-    function editProduct(){
-        let productId=$("#id_edit").val();
+    function editProduct() {
+        let productId = $("#id_edit").val();
         let name = $("#name_edit").val();
         let price = $("#price_edit").val();
         let quantity = $("#quantity_edit").val();
@@ -259,9 +279,9 @@
                 $.ajax({
                     type: "PUT",
                     contentType: "application/json",
-                    url: "http://localhost:8080/products/api/"+productId,
+                    url: "http://localhost:8080/products/api/" + productId,
                     data: JSON.stringify(newProduct),
-                    success: function (){
+                    success: function () {
                         getAllProduct();
                         alert("Product is edited successfully")
                     },
@@ -300,6 +320,46 @@
                         `<option name="category" value="${data[i].id}">${data[i].name}</option>`;
                 }
                 $("#selectCategory_edit").html(content);
+            }
+        })
+    }
+</script>
+
+<script>
+    function searchByName() {
+        let productName = $("#searchByName").val();
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: "http://localhost:8080/products/api/search/" + productName,
+            success: function (data) {
+                let content = `<caption><h2>Product list</h2></caption>
+    <tr>
+        <th>#</th>
+        <th>Product Name</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Color</th>
+        <th>Category</th>
+        <th>Edit</th>
+        <th>Delete</th>
+    </tr>`;
+                for (let i = 0; i < data.length; i++) {
+                    content += `<tr>
+            <td>${data[i].id}</td>
+        <td>${data[i].name}</td>
+        <td>${data[i].price}</td>
+        <td>${data[i].quantity}</td>
+        <td>${data[i].color}</td>
+        <td>${data[i].category.name}</td>
+        <td> <input type="submit" value="Edit" onclick="viewDetail(${data[i].id})"/> </td>
+        <td><input type="submit" value="Delete" onclick="deleteProduct(${data[i].id})" id="delete${data[i].id}"/></td>
+    </tr>`;
+                }
+                $("#listProduct").html(content);
+            },
+            error: function (e) {
+                alert("Search error: " + e)
             }
         })
     }
