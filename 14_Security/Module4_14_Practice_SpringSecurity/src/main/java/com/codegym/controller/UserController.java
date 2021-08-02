@@ -16,6 +16,10 @@ public class UserController {
         return new ModelAndView("/index");
     }
 
+    @GetMapping("/login")
+    public ModelAndView login(){
+        return new ModelAndView("/login");
+    }
     @GetMapping("/user")
     public ModelAndView user(Principal principal){
         System.out.println(principal.getName());
