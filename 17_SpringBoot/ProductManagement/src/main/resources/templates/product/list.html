@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+<div>
+    <button id="bt_showFormCreate">Show Form Create</button>
+    <table id="formCreate" hidden>
+        <tr>
+            <td>Name</td>
+        </tr>
+        <tr>
+            <td><input type="text" id="name"></td>
+        </tr>
+        <tr>
+            <td>Price</td>
+        </tr>
+        <tr>
+            <td><input type="number" id="price"></td>
+        </tr>
+        <tr>
+            <td>Quantity</td>
+        </tr>
+        <tr>
+            <td><input type="number" id="quantity"></td>
+        </tr>
+        <tr>
+            <td>Color</td>
+        </tr>
+        <tr>
+            <td><input type="text" id="color"></td>
+        </tr>
+        <tr>
+            <td>Description</td>
+        </tr>
+        <tr>
+            <td><input type="text" id="description"></td>
+        </tr>
+        <tr>
+            <td><select id="selectCategory"></select></td>
+        </tr>
+        <tr>
+            <td><input type="submit" value="Create" onclick="createProduct()">|<input type="submit" value="Back"
+                                                                                      onclick="hideFormCreate()"></td>
+        </tr>
+    </table>
+</div>
+
+<div>
+    <button id="bt_search">Search</button>
+    <input type="text" id="searchByName">
+</div>
+
+<div>
+    <button id="bt_showList">Show list</button>
+    <table id="listProduct" border="1px solid" hidden width="50%"></table>
+</div>
+
+
+<div>
+
+    <table id="formEdit" hidden>
+        <caption><h3>Product information</h3></caption>
+        <tr>
+            <td><input type="hidden" id="id_edit"></td>
+        </tr>
+        <tr>
+            <td>Name</td>
+        </tr>
+        <tr>
+            <td><input type="text" id="name_edit"></td>
+        </tr>
+        <tr>
+            <td>Price</td>
+        </tr>
+        <tr>
+            <td><input type="number" id="price_edit"></td>
+        </tr>
+        <tr>
+            <td>Quantity</td>
+        </tr>
+        <tr>
+            <td><input type="number" id="quantity_edit"></td>
+        </tr>
+        <tr>
+            <td>Color</td>
+        </tr>
+        <tr>
+            <td><input type="text" id="color_edit"></td>
+        </tr>
+        <tr>
+            <td>Description</td>
+        </tr>
+        <tr>
+            <td><input type="text" id="description_edit"></td>
+        </tr>
+        <tr>
+            <td><select id="selectCategory_edit"></select></td>
+        </tr>
+        <tr>
+            <td><input type="submit" value="Edit" onclick="editProduct()">|<input type="submit" value="Back"
+                                                                                  onclick="hideFormEdit()"></td>
+        </tr>
+    </table>
+</div>
+
+<script>
+    $("#bt_showFormCreate").click(function () {
+        $("#formCreate").show();
+        getAllCategory();
+    })
+
+    function hideFormCreate() {
+        $("#formCreate").hide();
+    }
+
+    $("#bt_showList").click(function () {
+        $("#listProduct").show();
+        getAllProduct();
+    })
+
+    $("#bt_showList").dblclick(function () {
+        $("#listProduct").hide();
+    })
+
+    $("#bt_search").click(function () {
+        $("#listProduct").show();
+        searchByName();
+    })
+
+    $("#bt_search").dblclick(function () {
+        $("#listProduct").hide();
+    })
+
+    function hideFormEdit() {
+        $("#formEdit").hide();
+    }
+
+    function createProduct() {
+        let name = $("#name").val();
+        let price = $("#price").val();
+        let quantity = $("#quantity").val();
+        let color = $("#color").val();
+        let description = $("#description").val();
+        let categoryId = $("#selectCategory").val();
+        $.ajax({
+            type: "GET",
+            url: "http://localhost:8080/categories/api/" + categoryId,
+            success: function (category) {
+                let newProduct = {
+                    name: name,
+                    price: price,
+                    quantity: quantity,
+                    color: color,
+                    description: description,
+                    category: {
+                        id: categoryId,
+                        name: category.name
+                    }
+                }
+
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json",
+                    url: "http://localhost:8080/products/api",
+                    data: JSON.stringify(newProduct),
+                    success: function () {
+                        getAllProduct();
+                        alert("new product is created")
+                    },
+                    error: function (e) {
+                        alert("server error in create: " + e);
+                    }
+                })
+
+            }
+        })
+    }
+
+    function getAllProduct() {
+        $.ajax({
+            type: "GET",
+            url: "http://localhost:8080/products/api",
+            success: function (data) {
+                let content = `<caption><h2>Product list</h2></caption>
+    <tr>
+        <th>#</th>
+        <th>Product Name</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Color</th>
+        <th>Category</th>
+        <th>Edit</th>
+        <th>Delete</th>
+    </tr>`;
+                for (let i = 0; i < data.length; i++) {
+                    content += `<tr>
+            <td>${data[i].id}</td>
+        <td>${data[i].name}</td>
+        <td>${data[i].price}</td>
+        <td>${data[i].quantity}</td>
+        <td>${data[i].color}</td>
+        <td>${data[i].category.name}</td>
+        <td> <input type="submit" value="Edit" onclick="viewDetail(${data[i].id})"/> </td>
+        <td><input type="submit" value="Delete" onclick="deleteProduct(${data[i].id})" id="delete${data[i].id}"/></td>
+    </tr>`;
+
+                }
+                $("#listProduct").html(content);
+
+
+            }
+        })
+    }
+
+    function viewDetail(id) {
+        $.ajax({
+            type: "GET",
+            url: "http://localhost:8080/products/api/" + id,
+            success: function (data) {
+                $("#id_edit").val(data.id);
+                $("#name_edit").val(data.name);
+                $("#price_edit").val(data.price);
+                $("#quantity_edit").val(data.quantity);
+                $("#color_edit").val(data.color);
+                $("#description_edit").val(data.description);
+                $("#formEdit").show();
+                getAllCategoryEditForm();
+            },
+            error: function (e) {
+                alert("Server error in view detail: " + e)
+            }
+        })
+    }
+
+    function deleteProduct(id) {
+        $.ajax({
+            type: "DELETE",
+            contentType: "application/json",
+            url: "http://localhost:8080/products/api/" + id,
+            success: function () {
+                getAllProduct();
+                alert("Product is deleted")
+            },
+            error: function (e) {
+                alert("Server error in delete: " + e)
+            }
+        })
+    }
+
+    function editProduct() {
+        let productId = $("#id_edit").val();
+        let name = $("#name_edit").val();
+        let price = $("#price_edit").val();
+        let quantity = $("#quantity_edit").val();
+        let color = $("#color_edit").val();
+        let description = $("#description_edit").val();
+        let categoryId = $("#selectCategory_edit").val();
+
+        $.ajax({
+            type: "GET",
+            url: "http://localhost:8080/categories/api/" + categoryId,
+            success: function (category) {
+                let newProduct = {
+                    name: name,
+                    price: price,
+                    quantity: quantity,
+                    color: color,
+                    description: description,
+                    category: {
+                        id: categoryId,
+                        name: category.name
+                    }
+                }
+
+                $.ajax({
+                    type: "PUT",
+                    contentType: "application/json",
+                    url: "http://localhost:8080/products/api/" + productId,
+                    data: JSON.stringify(newProduct),
+                    success: function () {
+                        getAllProduct();
+                        alert("Product is edited successfully")
+                    },
+                    error: function (e) {
+                        alert("Server error: " + e);
+                    }
+                })
+            }
+        })
+    }
+
+    function getAllCategory() {
+        $.ajax({
+            type: "GET",
+            url: "http://localhost:8080/categories/api",
+            success: function (data) {
+                let content = "";
+                for (let i = 0; i < data.length; i++) {
+                    content +=
+                        `<option name="category" value="${data[i].id}">${data[i].name}</option>`;
+                }
+                $("#selectCategory").html(content);
+            }
+
+        })
+    }
+
+    function getAllCategoryEditForm() {
+        $.ajax({
+            type: "GET",
+            url: "http://localhost:8080/categories/api",
+            success: function (data) {
+                let content = "";
+                for (let i = 0; i < data.length; i++) {
+                    content +=
+                        `<option name="category" value="${data[i].id}">${data[i].name}</option>`;
+                }
+                $("#selectCategory_edit").html(content);
+            }
+        })
+    }
+</script>
+
+<script>
+    function searchByName() {
+        let productName = $("#searchByName").val();
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: "http://localhost:8080/products/api/search/" + productName,
+            success: function (data) {
+                let content = `<caption><h2>Product list</h2></caption>
+    <tr>
+        <th>#</th>
+        <th>Product Name</th>
+        <th>Price</th>
+        <th>Quantity</th>
+        <th>Color</th>
+        <th>Category</th>
+        <th>Edit</th>
+        <th>Delete</th>
+    </tr>`;
+                for (let i = 0; i < data.length; i++) {
+                    content += `<tr>
+            <td>${data[i].id}</td>
+        <td>${data[i].name}</td>
+        <td>${data[i].price}</td>
+        <td>${data[i].quantity}</td>
+        <td>${data[i].color}</td>
+        <td>${data[i].category.name}</td>
+        <td> <input type="submit" value="Edit" onclick="viewDetail(${data[i].id})"/> </td>
+        <td><input type="submit" value="Delete" onclick="deleteProduct(${data[i].id})" id="delete${data[i].id}"/></td>
+    </tr>`;
+                }
+                $("#listProduct").html(content);
+            },
+            error: function (e) {
+                alert("Search error: " + e)
+            }
+        })
+    }
+</script>
+</body>
+</html>
