@@ -3,9 +3,10 @@ package com.example.service.role;
 import com.example.model.Role;
 import com.example.repository.IRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
-
+@Service
 public class RoleService implements IRoleService{
     @Autowired
     private IRoleRepository roleRepository;
@@ -31,7 +32,7 @@ public class RoleService implements IRoleService{
     }
 
     @Override
-    public Optional<Role> findByName(String name) {
+    public Role findByName(String name) {
         return roleRepository.findByName(name);
     }
 }
