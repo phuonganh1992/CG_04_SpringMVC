@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+            crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body onload="showList(),getAllCountry()">
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-8">
+            <div id="list"></div>
+        </div>
+        <div class="col-4">
+            <div id="info">
+                <h5>Thành phố</h5>
+                <p>Tên:</p>
+                <p>Quốc gia:</p>
+                <p>Diện tích:</p>
+                <p>Dân số:</p>
+                <p>Giới thiệu:</p>
+                <p></p>
+                <p>
+                    <button onclick="showFormEdit()">Chỉnh sửa</button>
+                    <button onclick="deleteCity()">Xóa</button>
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div id="add">
+            <button onclick="showFormCreate()">Add new country</button>
+            <div class="modal fade" id="createForm" tabindex="-1" aria-labelledby="exampleModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <a href="" style="position: inherit;margin-left: 480px;text-decoration: none;color: gray"
+                           data-bs-dismiss="modal">x</a>
+                        <div class="modal-header">
+                            <h5 class="modal-title">Thêm thành phố</h5>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                Tên: <input type="text" class="form-control" id="cityName" aria-describedby="emailHelp" required>
+                            </div>
+                            <div class="mb-3">
+                                Quốc gia:
+                                <select name="" id="allCountry">
+
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                Diện tích: <input type="number" class="form-control" id="cityArea"
+                                                  aria-describedby="emailHelp" required>
+                            </div>
+                            <div class="mb-3">
+                                Dân số: <input type="number" class="form-control" id="cityPopulation"
+                                               aria-describedby="emailHelp" required>
+                            </div>
+                            <div class="mb-3">
+                                GDP: <input type="number" class="form-control" id="cityGDP" aria-describedby="emailHelp" required>
+                            </div>
+                            <div class="mb-3">
+                                Description:<textarea class="form-control" name="" id="cityDescription" cols="30"
+                                                      rows="10" required></textarea>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button onclick="saveCity()">Nhập thành phố</button>
+                            <button data-bs-dismiss="modal">Thoát</button>
+                            <div id="message_createCity"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div id="edit">
+            <div class="modal fade" id="editForm" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <a href="" style="position: inherit;margin-left: 480px;text-decoration: none;color: gray"
+                           data-bs-dismiss="modal">x</a>
+                        <div class="modal-header">
+                            <h5 class="modal-title">Thêm thành phố</h5>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <input type="text" hidden id="edit_id">
+                                Tên: <input type="text" class="form-control" id="edit_cityName" aria-describedby="emailHelp">
+                            </div>
+                            <div class="mb-3">
+                                Quốc gia:
+                                <select name="" id="edit_allCountry">
+
+                                </select>
+                            </div>
+                            <div class="mb-3">
+                                Diện tích: <input type="number" class="form-control" id="edit_cityArea"
+                                                  aria-describedby="emailHelp">
+                            </div>
+                            <div class="mb-3">
+                                Dân số: <input type="number" class="form-control" id="edit_cityPopulation"
+                                               aria-describedby="emailHelp">
+                            </div>
+                            <div class="mb-3">
+                                GDP: <input type="number" class="form-control" id="edit_cityGDP" aria-describedby="emailHelp">
+                            </div>
+                            <div class="mb-3">
+                                Description:<textarea class="form-control" name="" id="edit_cityDescription" cols="30"
+                                                      rows="10"></textarea>
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button onclick="editCity()">Edit</button>
+                            <button data-bs-dismiss="modal">Thoát</button>
+                            <div id="edit_message_createCity"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function showList() {
+        $.ajax({
+            type: "GET",
+            url: "http://localhost:8080/cities",
+            success: function (data) {
+                console.log(data)
+                let content = `<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Thành phố</th>
+        <th scope="col">Quốc gia</th>
+        <th scope="col">Thao tác</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>`;
+                for (let i = 0; i < data.length; i++) {
+                    content += `<tr><th scope="row">${i + 1}</th>
+        <td><a onclick="viewDetail(${data[i].id})">${data[i].name}</a></td>
+        <td>${data[i].country.name}</td>
+        <td><a  href="" onclick="showFormEdit(${data[i].id})">Chỉnh sửa</a> | <a href="" onclick="deleteCity(${data[i].id})">Xóa</a></td> </tr>`;
+
+                }
+                content += `</tbody> </table>`;
+                document.getElementById("list").innerHTML = content
+            }
+        })
+    }
+
+    function viewDetail(id) {
+
+        $.ajax({
+            type: "GET",
+            url: "http://localhost:8080/cities/" + id,
+            success: function (city) {
+                let content = `<h5>Thành phố ${city.name}</h5>
+                    <p>Tên: ${city.name}</p>
+                    <p>Quốc gia: ${city.country.name}</p>
+                    <p>Diện tích: ${city.area}</p>
+                    <p>Dân số: ${city.population}</p>
+                    <p>Giới thiệu: ${city.description}</p>
+                    <p></p>
+                    <p><button onclick="showFormEdit(${city.id})">Chỉnh sửa</button> <button>Xóa</button></p>`;
+                document.getElementById('info').innerHTML = content
+
+            }
+        })
+
+    }
+
+    function getAllCountry() {
+        $.ajax({
+            type: "GET",
+            url: "http://localhost:8080/countries",
+            success: function (countries) {
+                let content = "";
+                for (let i = 0; i < countries.length; i++) {
+                    content += `<option value="${countries[i].id}">${countries[i].name}</option>`
+                }
+                document.getElementById("allCountry").innerHTML = content;
+            }
+        })
+    }
+    function getAllCountryEdit() {
+        $.ajax({
+            type: "GET",
+            url: "http://localhost:8080/countries",
+            success: function (countries) {
+                let content = "";
+                for (let i = 0; i < countries.length; i++) {
+                    content += `<option value="${countries[i].id}">${countries[i].name}</option>`
+                }
+                document.getElementById("edit_allCountry").innerHTML = content;
+            }
+        })
+    }
+
+    function showFormCreate() {
+        let myModal = new bootstrap.Modal(document.getElementById('createForm'), {
+            keyboard: false
+        })
+        myModal.show();
+    }
+
+    function saveCity(){
+        let name=$("#cityName").val();
+        let countryId=$("#allCountry").val();
+        let area=$("#cityArea").val();
+        let population=$("#cityPopulation").val();
+        let gdp=$("#cityGDP").val();
+        let description=$("#cityDescription").val();
+
+        let city={
+            name:name,
+            area:area,
+            population:population,
+            description:description,
+            gdp:gdp,
+            country:{
+                id: countryId
+            }
+        }
+        $.ajax({
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            type: "POST",
+            url: "http://localhost:8080/cities",
+            data: JSON.stringify(city),
+            success: function () {
+                $("#message_createSong").text("Your city is created successfully");
+                showList()
+            },
+            error: function (error) {
+                console.log("your error: "+error)
+            }
+        });
+
+    }
+
+    function deleteCity(id){
+        $.ajax({
+            type: "DELETE",
+            contentType: "application/json",
+            url: "http://localhost:8080/cities/" + id,
+            success: function () {
+                alert("Product is deleted")
+                showList();
+            },
+            error: function (e) {
+                alert("Server error in delete: " + e)
+            }
+        })
+    }
+
+    function showFormEdit(id){
+        $.ajax({
+            type: "GET",
+            url: "http://localhost:8080/cities/" + id,
+            success: function (city) {
+                getAllCountryEdit()
+                $("#edit_id").val(id);
+                $("#edit_cityName").val(city.name);
+                $("#edit_allCountry").val(city.country.name)
+                $("#edit_cityArea").val(city.area);
+                $("#edit_cityPopulation").val(city.population);
+                $("#edit_cityGDP").val(city.gdp);
+                $("#edit_cityDescription").val(city.description);
+            }
+        })
+        let myModal = new bootstrap.Modal(document.getElementById('editForm'), {
+            keyboard: false
+        })
+        myModal.show();
+
+
+    }
+    function editCity() {
+
+        let id=$("#edit_id").val();
+        let name=$("#edit_cityName").val();
+        let countryId=$("#edit_allCountry").val();
+        let area=$("#edit_cityArea").val();
+        let population=$("#edit_cityPopulation").val();
+        let gdp=$("#edit_cityGDP").val();
+        let description=$("#edit_cityDescription").val();
+        let city={
+            name:name,
+            area:area,
+            population:population,
+            description:description,
+            gdp:gdp,
+            country:{
+                id: countryId
+            }
+        }
+
+                $.ajax({
+                    type: "PUT",
+                    contentType: "application/json",
+                    url: "http://localhost:8080/cities/" + id,
+                    data: JSON.stringify(city),
+                    success: function () {
+                       showList();
+                    },
+                    error: function (e) {
+                        alert("Server error: " + e);
+                    }
+                })
+
+
+    }
+
+</script>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+<div id="main"></div>
+<form enctype="multipart/form-data" id="form">
+    <input type="text" name="name">
+    <input type="file" name="file"/>
+    <button type="button" onclick="submitForm()">Upload</button>
+</form>
+
+<script type="text/javascript">
+
+    function submitForm() {
+        let form = document.getElementById("form");
+        let data = new FormData(form);
+
+        $.ajax({
+            type: "POST",
+            enctype: 'multipart/form-data',
+            url: "http://localhost:8080/rest/upload",
+            data: data,
+            processData: false,
+            contentType: false,
+            cache: false,
+            timeout: 1000000,
+            success: function (data) {
+                console.log(data);
+                // document.getElementById('main').innerHTML = `<img src="image/${data}">`
+                document.getElementById('main').innerHTML = `<audio controls preload="none">
+    <source src="audio/${data}">
+</audio>`
+            }
+        })
+    }
+</script>
+</body>
+</html>
