@@ -1,7 +1,8 @@
-package com.zingmp3.service.country;
+package com.example.exam_final2.service.country;
 
-import com.zingmp3.model.Country;
-import com.zingmp3.service.IGeneralService;
+import com.example.exam_final2.model.Country;
+import com.example.exam_final2.service.IGeneralService;
+
 
 public interface ICountryService extends IGeneralService<Country> {
 }

@@ -1,7 +1,8 @@
-package com.zingmp3.service.city;
+package com.example.exam_final2.service.city;
 
-import com.zingmp3.model.City;
-import com.zingmp3.repository.ICityRepository;
+
+import com.example.exam_final2.model.City;
+import com.example.exam_final2.repository.ICityRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

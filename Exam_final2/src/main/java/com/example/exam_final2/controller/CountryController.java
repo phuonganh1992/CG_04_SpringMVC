@@ -1,8 +1,8 @@
-package com.zingmp3.controller;
+package com.example.exam_final2.controller;
 
-import com.zingmp3.model.Country;
-import com.zingmp3.service.city.ICityService;
-import com.zingmp3.service.country.ICountryService;
+import com.example.exam_final2.model.Country;
+import com.example.exam_final2.service.city.ICityService;
+import com.example.exam_final2.service.country.ICountryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/api/countries")
+@RequestMapping("/countries")
 public class CountryController {
     @Autowired
     private ICountryService countryService;

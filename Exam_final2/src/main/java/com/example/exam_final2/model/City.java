@@ -1,4 +1,4 @@
-package com.zingmp3.model;
+package com.example.exam_final2.model;
 
 import javax.persistence.*;
 

@@ -1,7 +1,7 @@
-package com.zingmp3.service.country;
+package com.example.exam_final2.service.country;
 
-import com.zingmp3.model.Country;
-import com.zingmp3.repository.ICountryRepository;
+import com.example.exam_final2.model.Country;
+import com.example.exam_final2.repository.ICountryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

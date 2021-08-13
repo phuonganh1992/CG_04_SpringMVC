@@ -1,4 +1,4 @@
-package com.zingmp3.model;
+package com.example.exam_final2.model;
 
 import javax.persistence.*;
 
@@ -10,6 +10,9 @@ public class Country {
     private Long id;
 
     private String name;
+
+    public Country() {
+    }
 
     public Country(String name) {
         this.name = name;
